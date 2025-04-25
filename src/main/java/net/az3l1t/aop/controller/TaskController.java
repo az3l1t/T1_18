@@ -1,5 +1,6 @@
 package net.az3l1t.aop.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import net.az3l1t.aop.dto.TaskCreateDto;
@@ -19,7 +20,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public TaskResponseDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+    public TaskResponseDto createTask(@RequestBody @Valid TaskCreateDto taskCreateDto) {
         return taskService.createTask(taskCreateDto);
     }
 
@@ -35,7 +36,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public TaskResponseDto updateTask(@PathVariable @Positive Long id,
-                                      @RequestBody TaskUpdateDto taskUpdateDto) {
+                                      @RequestBody @Valid TaskUpdateDto taskUpdateDto) {
         return taskService.updateTask(id, taskUpdateDto);
     }
 

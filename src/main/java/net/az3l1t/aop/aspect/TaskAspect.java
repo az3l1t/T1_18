@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Aspect
@@ -19,7 +20,9 @@ public class TaskAspect {
 
     @Before("@annotation(net.az3l1t.aop.aspect.annotation.Loggable)")
     public void logExecutionBefore(JoinPoint joinPoint) {
-        log.info("The method with name: {}, was called!", joinPoint.getSignature().getName());
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        log.info("Method '{}' called with arguments: {}", methodName, Arrays.toString(args));
     }
 
     @AfterThrowing(
@@ -27,9 +30,11 @@ public class TaskAspect {
             throwing = "exception"
     )
     public void handleException(JoinPoint joinPoint, TaskNotFoundException exception) {
-        log.error("The exception: {} was called in method: {}",
-                exception.getClass().getName(),
-                joinPoint.getSignature().getName());
+        log.error("Exception in method '{}': {} - {}",
+                joinPoint.getSignature().getName(),
+                exception.getClass().getSimpleName(),
+                exception.getMessage()
+        );
     }
 
     @AfterReturning(
@@ -37,22 +42,24 @@ public class TaskAspect {
             returning = "result"
     )
     public void afterReturningLogging(Object result) {
-        log.info("Called object: {} was delivered successfully", result.toString());
+        log.info("Method returned instance of {} with content: {}",
+                result.getClass().getSimpleName(),
+                result
+        );
     }
 
     @Around("@annotation(net.az3l1t.aop.aspect.annotation.TimeTracking)")
     public Object executionTimeTracking(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
-
+        long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();
-        if (proceed instanceof Page<?>) {
-            log.info("Oh, that is the page of objects!");
+        long duration = System.currentTimeMillis() - start;
+
+        if (duration > 500) {
+            log.warn("Method '{}' took {} ms (SLOW)", joinPoint.getSignature().getName(), duration);
+        } else {
+            log.info("Method '{}' executed in {} ms", joinPoint.getSignature().getName(), duration);
         }
 
-        long endTime = System.currentTimeMillis();
-        log.info("The execution time of method: {} is {}",
-                joinPoint.getSignature().getName(),
-                endTime - startTime);
         return proceed;
     }
 }
