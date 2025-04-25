@@ -2,9 +2,9 @@ spring:
   application:
     name: aop
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: password
+    url: {  }
+    username: {  }
+    password: {  }
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,5 +18,9 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+execution:
+  time:
+    cracking: 500
+
 server:
-  port: {}
+  port: {  }

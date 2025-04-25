@@ -5,6 +5,7 @@ import net.az3l1t.aop.exception.TaskNotFoundException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -13,6 +14,9 @@ import java.util.Arrays;
 @Component
 @Slf4j
 public class TaskAspect {
+
+    @Value("${execution.time.cracking}")
+    private long crackingTime;
 
     @Before("@annotation(net.az3l1t.aop.aspect.annotation.Loggable)")
     public void logExecutionBefore(JoinPoint joinPoint) {
@@ -50,7 +54,7 @@ public class TaskAspect {
         Object proceed = joinPoint.proceed();
         long duration = System.currentTimeMillis() - start;
 
-        if (duration > 500) {
+        if (duration > crackingTime) {
             log.warn("Method '{}' took {} ms (SLOW)", joinPoint.getSignature().getName(), duration);
         } else {
             log.info("Method '{}' executed in {} ms", joinPoint.getSignature().getName(), duration);
