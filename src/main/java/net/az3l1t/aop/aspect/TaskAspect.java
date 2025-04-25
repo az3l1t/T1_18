@@ -1,17 +1,13 @@
 package net.az3l1t.aop.aspect;
 
 import lombok.extern.slf4j.Slf4j;
-import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.exception.TaskNotFoundException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Aspect
 @Component
@@ -60,6 +56,15 @@ public class TaskAspect {
             log.info("Method '{}' executed in {} ms", joinPoint.getSignature().getName(), duration);
         }
 
+        return proceed;
+    }
+
+    @Around("@annotation(net.az3l1t.aop.aspect.annotation.DeletingLoggable)")
+    public Object deletingLogging(ProceedingJoinPoint joinPoint) throws Throwable {
+        Long taskId = (Long) joinPoint.getArgs()[0];
+        log.info("Deleting an Task with id: {}", taskId);
+        Object proceed = joinPoint.proceed();
+        log.info("Successfully deleted an Task with id: {}", taskId);
         return proceed;
     }
 }

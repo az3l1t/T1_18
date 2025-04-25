@@ -1,10 +1,8 @@
 package net.az3l1t.aop.service;
 
 import lombok.RequiredArgsConstructor;
-import net.az3l1t.aop.aspect.annotation.Loggable;
-import net.az3l1t.aop.aspect.annotation.ResultLoggable;
-import net.az3l1t.aop.aspect.annotation.TaskFoundExceptionHandling;
-import net.az3l1t.aop.aspect.annotation.TimeTracking;
+import lombok.extern.slf4j.Slf4j;
+import net.az3l1t.aop.aspect.annotation.*;
 import net.az3l1t.aop.dto.TaskCreateDto;
 import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.dto.TaskUpdateDto;
@@ -19,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
@@ -39,8 +38,10 @@ public class TaskService {
     }
 
     @Transactional
+    @DeletingLoggable
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
+            log.error("Task was not found: {}", id);
             throw new TaskNotFoundException("Task not found with id: " + id);
         }
         taskRepository.deleteById(id);
