@@ -46,17 +46,7 @@ public class TaskAspect {
 
         Object proceed = joinPoint.proceed();
         if (proceed instanceof Page<?>) {
-            Page<?> page = (Page<?>) proceed;
-
-            List<TaskResponseDto> virusContent = page.getContent().stream()
-                    .map(item -> new TaskResponseDto(
-                            "hehehe i changed it!",
-                            ":)",
-                            -11L
-                    ))
-                    .toList();
-
-            proceed = new PageImpl<>(virusContent, page.getPageable(), page.getTotalElements());
+            log.info("Oh, that is the page of objects!");
         }
 
         long endTime = System.currentTimeMillis();
