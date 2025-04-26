@@ -23,15 +23,15 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     @Transactional
-    @Loggable
+    @LogExecution
     public TaskResponseDto createTask(TaskCreateDto taskDto) {
         Task task = taskMapper.toEntity(taskDto);
         return taskMapper.toResponseDto(taskRepository.save(task));
     }
 
     @Transactional
-    @TaskFoundExceptionHandling
-    @Loggable
+    @LogExceptionTaskNotFound
+    @LogExecution
     public TaskResponseDto updateTask(Long id, TaskUpdateDto taskUpdateDto) {
         Task task = findTaskById(id);
         taskMapper.updateEntityFromDto(taskUpdateDto, task);
@@ -39,27 +39,26 @@ public class TaskService {
     }
 
     @Transactional
-    @DeletingLoggable
+    @LogExceptionTaskNotFound
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            log.error("Task was not found: {}", id);
             throw new TaskNotFoundException("Task not found with id: " + id);
         }
         taskRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
-    @TaskFoundExceptionHandling
-    @ResultLoggable
-    @Loggable
+    @LogExceptionTaskNotFound
+    @LogResult
+    @LogExecution
     public TaskResponseDto getTaskById(Long id) {
         Task task = findTaskById(id);
         return taskMapper.toResponseDto(task);
     }
 
     @Transactional(readOnly = true)
-    @TimeTracking
-    @Loggable
+    @LogTracking
+    @LogExecution
     public Page<TaskResponseDto> getAllTasks(Pageable pageable) {
         return taskRepository.findAll(pageable)
                 .map(taskMapper::toResponseDto);

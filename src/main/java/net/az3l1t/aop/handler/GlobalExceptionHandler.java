@@ -1,5 +1,6 @@
 package net.az3l1t.aop.handler;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import net.az3l1t.aop.exception.TaskNotFoundException;
 import net.az3l1t.aop.handler.response.ErrorResponse;
@@ -16,12 +17,12 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(TaskNotFoundException.class)
+    @ExceptionHandler({TaskNotFoundException.class, EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleTaskNotFound(TaskNotFoundException ex) {
         Map<String, String> details = new HashMap<>();
         details.put("error", ex.getMessage());
-        return createErrorResponse(HttpStatus.NOT_FOUND, "Task not found", details);
+        return createErrorResponse(HttpStatus.NOT_FOUND, "Entity not found", details);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
