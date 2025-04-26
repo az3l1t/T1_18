@@ -31,6 +31,7 @@ public class TaskService {
 
     @Transactional
     @TaskFoundExceptionHandling
+    @Loggable
     public TaskResponseDto updateTask(Long id, TaskUpdateDto taskUpdateDto) {
         Task task = findTaskById(id);
         taskMapper.updateEntityFromDto(taskUpdateDto, task);
@@ -48,7 +49,9 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
+    @TaskFoundExceptionHandling
     @ResultLoggable
+    @Loggable
     public TaskResponseDto getTaskById(Long id) {
         Task task = findTaskById(id);
         return taskMapper.toResponseDto(task);
@@ -56,6 +59,7 @@ public class TaskService {
 
     @Transactional(readOnly = true)
     @TimeTracking
+    @Loggable
     public Page<TaskResponseDto> getAllTasks(Pageable pageable) {
         return taskRepository.findAll(pageable)
                 .map(taskMapper::toResponseDto);
