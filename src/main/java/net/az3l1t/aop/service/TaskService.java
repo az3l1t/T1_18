@@ -41,10 +41,8 @@ public class TaskService {
     @Transactional
     @LogExceptionTaskNotFound
     public void deleteTask(Long id) {
-        if (!taskRepository.existsById(id)) {
-            throw new TaskNotFoundException("Task not found with id: " + id);
-        }
-        taskRepository.deleteById(id);
+        Task task = findTaskById(id);
+        taskRepository.delete(task);
     }
 
     @Transactional(readOnly = true)
