@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         Map<String, String> details = new HashMap<>();
-        details.put("error", "Parameter '" + ex.getName() + "' must be a valid number");
+        details.put("error", "Parameter " + ex.getName() + " must be a valid number");
         return createErrorResponse(HttpStatus.BAD_REQUEST, "Invalid parameter", details);
     }
 
