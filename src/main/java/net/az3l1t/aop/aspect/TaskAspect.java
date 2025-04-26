@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Slf4j
 public class TaskAspect {
 
-    @Value("${execution.time.cracking}")
+    @Value("${execution.time.cracking:500}")
     private long crackingTime;
 
     @Before("@annotation(net.az3l1t.aop.aspect.annotation.Loggable)")
