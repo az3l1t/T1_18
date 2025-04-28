@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleTaskNotFound(TaskNotFoundException ex) {
         Map<String, String> details = new HashMap<>();
         details.put("error", ex.getMessage());
-        return createErrorResponse(HttpStatus.NOT_FOUND, "Entity not found", details);
+        return createErrorResponse("Entity not found", details);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         Map<String, String> details = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 details.put(error.getField(), error.getDefaultMessage()));
-        return createErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed for request body", details);
+        return createErrorResponse("Validation failed for request body", details);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
         Map<String, String> details = new HashMap<>();
         ex.getConstraintViolations().forEach(violation ->
                 details.put(violation.getPropertyPath().toString(), violation.getMessage()));
-        return createErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed for request parameters", details);
+        return createErrorResponse("Validation failed for request parameters", details);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         Map<String, String> details = new HashMap<>();
         details.put("error", ex.getMessage());
-        return createErrorResponse(HttpStatus.BAD_REQUEST, "Invalid request body", details);
+        return createErrorResponse("Invalid request body", details);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         Map<String, String> details = new HashMap<>();
         details.put("error", "Parameter " + ex.getName() + " must be a valid number");
-        return createErrorResponse(HttpStatus.BAD_REQUEST, "Invalid parameter", details);
+        return createErrorResponse("Invalid parameter", details);
     }
 
     @ExceptionHandler(Exception.class)
@@ -64,10 +64,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleGenericException(Exception ex) {
         Map<String, String> details = new HashMap<>();
         details.put("error", ex.getMessage());
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", details);
+        return createErrorResponse("Internal server error", details);
     }
 
-    private ErrorResponse createErrorResponse(HttpStatus status, String message, Map<String, String> details) {
-        return new ErrorResponse(status.value(), status.getReasonPhrase(), message, details);
+    private ErrorResponse createErrorResponse(String message, Map<String, String> details) {
+        return new ErrorResponse(message, details);
     }
 }
