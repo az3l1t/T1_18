@@ -6,10 +6,12 @@ import net.az3l1t.aop.aspect.annotation.*;
 import net.az3l1t.aop.dto.TaskCreateDto;
 import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.dto.TaskUpdateDto;
+import net.az3l1t.aop.dto.kafka.TaskEventDto;
 import net.az3l1t.aop.entity.Task;
 import net.az3l1t.aop.exception.TaskNotFoundException;
 import net.az3l1t.aop.mapper.TaskMapper;
 import net.az3l1t.aop.repository.TaskRepository;
+import net.az3l1t.aop.service.kafka.producer.TaskProducerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class TaskService {
+    private final TaskProducerService taskProducerService;
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
@@ -26,7 +29,11 @@ public class TaskService {
     @LogExecution
     public TaskResponseDto createTask(TaskCreateDto taskDto) {
         Task task = taskMapper.toEntity(taskDto);
-        return taskMapper.toResponseDto(taskRepository.save(task));
+        Task savedTask = taskRepository.save(task);
+        TaskEventDto creatingEvent = taskMapper.toTaskEventDto(savedTask);
+
+        taskProducerService.sendTaskEvent(creatingEvent);
+        return taskMapper.toResponseDto(savedTask);
     }
 
     @Transactional

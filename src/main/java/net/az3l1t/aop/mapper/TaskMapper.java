@@ -3,6 +3,7 @@ package net.az3l1t.aop.mapper;
 import net.az3l1t.aop.dto.TaskCreateDto;
 import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.dto.TaskUpdateDto;
+import net.az3l1t.aop.dto.kafka.TaskEventDto;
 import net.az3l1t.aop.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,4 +22,10 @@ public interface TaskMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(TaskUpdateDto taskDto, @MappingTarget Task task);
+
+    @Mapping(source = "id", target = "taskId")
+    @Mapping(source = "title", target = "title")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "userId", target = "userId")
+    TaskEventDto toTaskEventDto(Task task);
 }
