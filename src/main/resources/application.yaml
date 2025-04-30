@@ -2,9 +2,9 @@ spring:
   application:
     name: aop
   datasource:
-    url: {  }
-    username: {  }
-    password: {  }
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,9 +18,50 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+  kafka:
+    bootstrap-servers: localhost:9092, localhost:9094, localhost:9096
+    admin:
+      auto-create: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      linger-ms: 10
+      compression-type: gzip
+    consumer:
+      group-id: task-management-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false
+      max-poll-records: 100
+      fetch-min-size: 1048576
+      properties:
+        spring.json.trusted.packages: net.az3l1t.aop.dto.kafka
+
+kafka:
+  topics:
+    task-events:
+      name: task-events
+      partitions: 3
+      replicas: 2
+      configs:
+        retention.ms: 604800000
+        cleanup.policy: delete
+    task-dlq:
+      name: task-dlq
+      partitions: 1
+      replicas: 2
+      configs:
+        retention.ms: 604800000
+        cleanup.policy: delete
+
 execution:
   time:
     cracking: 500
 
 server:
-  port: {  }
+  port: 8080

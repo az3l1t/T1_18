@@ -56,8 +56,14 @@ dependencies {
 	/*
 		Testing
 	 */
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	/*
+		Kafka
+	 */
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 tasks.named('test') {
