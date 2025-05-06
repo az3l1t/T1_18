@@ -20,8 +20,11 @@ public class NotificationService {
         message.setTo(notificationProperties.getRecipient());
         message.setFrom(notificationProperties.getSender());
         message.setSubject(notificationProperties.getSubjectUpdate());
-        message.setText(String.format(notificationProperties.getBasicText() +
-                " %s, %s", status, taskId));
+        message.setText(buildNotificationMessage(taskId, status, notificationProperties.getBasicTextUpdate()));
         mailSender.send(message);
+    }
+
+    private String buildNotificationMessage(Long taskId, String status, String basicText) {
+        return String.format(basicText + " %s, %s", status, taskId);
     }
 }

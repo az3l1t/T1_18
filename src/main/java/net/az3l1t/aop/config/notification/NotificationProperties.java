@@ -11,5 +11,5 @@ public class NotificationProperties {
     private String sender;
     private String recipient;
     private String subjectUpdate;
-    private String basicText;
+    private String basicTextUpdate;
 }
