@@ -7,6 +7,7 @@ import net.az3l1t.aop.service.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,7 +35,6 @@ public class TaskStatusConsumer {
                 log.debug("Successfully sent notification for taskId {}", message.taskId());
             } catch (Exception e) {
                 log.error("Failed to send notification for taskId {}: {}", message.taskId(), e.getMessage());
-                throw e;
             }
         }
         acknowledgment.acknowledge();
