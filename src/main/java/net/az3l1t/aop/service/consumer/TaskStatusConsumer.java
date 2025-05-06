@@ -33,7 +33,7 @@ public class TaskStatusConsumer {
             try {
                 notificationService.sendStatusUpdateNotification(message.taskId(), message.newStatus());
                 log.debug("Successfully sent notification for taskId {}", message.taskId());
-            } catch (Exception e) {
+            } catch (MailException e) {
                 log.error("Failed to send notification for taskId {}: {}", message.taskId(), e.getMessage());
             }
         }

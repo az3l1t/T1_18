@@ -22,13 +22,6 @@ public class NotificationService {
         message.setSubject(notificationProperties.getSubjectUpdate());
         message.setText(String.format(notificationProperties.getBasicText() +
                 " %s, %s", status, taskId));
-
-        try {
-            mailSender.send(message);
-            log.info("Successfully sent email notification for taskId {} to {}", taskId,
-                    notificationProperties.getRecipient());
-        } catch (MailException e) {
-            log.error("Failed to send email notification for taskId {}: {}", taskId, e.getMessage());
-        }
+        mailSender.send(message);
     }
 }
