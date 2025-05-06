@@ -28,12 +28,12 @@ public class TaskStatusConsumer {
     public void listenUpdating(List<KafkaUpdatingDto> messages, Acknowledgment acknowledgment) {
         log.info("Got batch of {} messages from topic {}", messages.size(), taskUpdatingTopic);
         for (KafkaUpdatingDto message : messages) {
-            log.debug("Processing message: taskId={}, newStatus={}", message.taskId(), message.newStatus());
+            log.debug("Processing message: taskId {}, newStatus {}", message.taskId(), message.newStatus());
             try {
                 notificationService.sendStatusUpdateNotification(message.taskId(), message.newStatus());
-                log.debug("Successfully sent notification for taskId={}", message.taskId());
+                log.debug("Successfully sent notification for taskId {}", message.taskId());
             } catch (Exception e) {
-                log.error("Failed to send notification for taskId={}: {}", message.taskId(), e.getMessage());
+                log.error("Failed to send notification for taskId {}: {}", message.taskId(), e.getMessage());
                 throw e;
             }
         }

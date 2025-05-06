@@ -11,9 +11,9 @@ public class LoggingJsonDeserializer<T> extends JsonDeserializer<T> {
 
     @Override
     public T deserialize(String topic, byte[] data) {
-        try{
+        try {
             return super.deserialize(topic, data);
-        }catch(Exception e){
+        } catch(Exception e){
             log.warn("Some error has occurred while deserializing {}", new String(data, StandardCharsets.UTF_8),e);
             return null;
         }
@@ -21,9 +21,9 @@ public class LoggingJsonDeserializer<T> extends JsonDeserializer<T> {
 
     @Override
     public T deserialize(String topic, Headers headers, byte[] data) {
-        try{
+        try {
             return super.deserialize(topic, headers, data);
-        }catch(Exception e){
+        } catch(Exception e){
             log.warn("Some error has occurred while deserializing {}", new String(data, StandardCharsets.UTF_8),e);
             return null;
         }

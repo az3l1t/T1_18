@@ -23,18 +23,21 @@ public class NotificationService {
     @Value("${notification.email.subject-update}")
     private String subject;
 
+    @Value("${notification.email.basic-text}")
+    private String basicText;
+
     public void sendStatusUpdateNotification(Long taskId, String status) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(recipient);
         message.setFrom(sender);
         message.setSubject(subject);
-        message.setText("Task Id: " + taskId + " has changed status: " + status);
+        message.setText(String.format(basicText + " %s, %s", status, taskId));
 
         try {
             mailSender.send(message);
-            log.info("Successfully sent email notification for taskId={} to {}", taskId, recipient);
+            log.info("Successfully sent email notification for taskId {} to {}", taskId, recipient);
         } catch (MailException e) {
-            log.error("Failed to send email notification for taskId={}: {}", taskId, e.getMessage());
+            log.error("Failed to send email notification for taskId {}: {}", taskId, e.getMessage());
         }
     }
 }

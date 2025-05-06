@@ -35,6 +35,7 @@ notification:
     recipient: {  }
     sender: {  }
     subject-update: Task Status Update
+    basic-text: The task has changed status
 
 kafka:
   bootstrap-servers: {  }

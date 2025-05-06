@@ -106,7 +106,7 @@ public class KafkaConfig {
         );
         errorHandler.addNotRetryableExceptions(IllegalStateException.class);
         errorHandler.setRetryListeners((record, ex, deliveryAttempt) -> {
-            log.error("RetryListeners message = {}, offset = {}, attempt = {}",
+            log.error("Retrying. message = {}, offset = {}, attempt = {}",
                     ex.getMessage(), record.offset(), deliveryAttempt);
         });
         return errorHandler;
