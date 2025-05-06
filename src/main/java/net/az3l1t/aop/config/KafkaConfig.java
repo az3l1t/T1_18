@@ -37,7 +37,7 @@ public class KafkaConfig {
     private boolean enableAutoCommit;
     @Value("${kafka.consumer.max-poll-interval-ms}")
     private String maxPollIntervalMs;
-    @Value("${kafka.consumer.trusted-packages}")
+    @Value("${kafka.consumer.trusted-packages:*}")
     private String trustedPackages;
     @Value("${kafka.producer.retries}")
     private String retries;
