@@ -25,7 +25,8 @@ public class NotificationService {
 
         try {
             mailSender.send(message);
-            log.info("Successfully sent email notification for taskId {} to {}", taskId, recipient);
+            log.info("Successfully sent email notification for taskId {} to {}", taskId,
+                    notificationProperties.getRecipient());
         } catch (MailException e) {
             log.error("Failed to send email notification for taskId {}: {}", taskId, e.getMessage());
         }
