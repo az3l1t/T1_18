@@ -2,7 +2,7 @@ package net.az3l1t.aop.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
+import net.az3l1t.aop.config.notification.NotificationProperties;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,25 +13,15 @@ import org.springframework.stereotype.Service;
 @Log4j2
 public class NotificationService {
     private final JavaMailSender mailSender;
-
-    @Value("${notification.email.sender}")
-    private String sender;
-
-    @Value("${notification.email.recipient}")
-    private String recipient;
-
-    @Value("${notification.email.subject-update}")
-    private String subject;
-
-    @Value("${notification.email.basic-text}")
-    private String basicText;
+    private final NotificationProperties notificationProperties;
 
     public void sendStatusUpdateNotification(Long taskId, String status) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(recipient);
-        message.setFrom(sender);
-        message.setSubject(subject);
-        message.setText(String.format(basicText + " %s, %s", status, taskId));
+        message.setTo(notificationProperties.getRecipient());
+        message.setFrom(notificationProperties.getSender());
+        message.setSubject(notificationProperties.getSubjectUpdate());
+        message.setText(String.format(notificationProperties.getBasicText() +
+                " %s, %s", status, taskId));
 
         try {
             mailSender.send(message);
