@@ -47,6 +47,7 @@ public class TaskService {
         taskMapper.updateEntityFromDto(taskUpdateDto, task);
 
         if (taskUpdateDto.status() != null && !taskUpdateDto.status().equals(oldStatus)) {
+            taskRepository.save(task);
             KafkaUpdatingDto taskUpdatingDto = KafkaUpdatingDto.builder()
                     .taskId(task.getId())
                     .newStatus(taskUpdateDto.status().toString())
