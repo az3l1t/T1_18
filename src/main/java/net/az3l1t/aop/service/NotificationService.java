@@ -25,6 +25,6 @@ public class NotificationService {
     }
 
     private String buildNotificationMessage(Long taskId, String status, String basicText) {
-        return String.format(basicText + " %s, %s", status, taskId);
+        return String.format(basicText + " %s, %d", status, taskId);
     }
 }
