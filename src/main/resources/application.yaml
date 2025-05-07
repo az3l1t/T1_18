@@ -54,6 +54,13 @@ kafka:
   topics:
     task-updating: task-updating-topic
 
+async:
+  notification:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 100
+    thread-name-prefix: "NotificationExecutor-"
+
 execution:
   time:
     cracking: 500
