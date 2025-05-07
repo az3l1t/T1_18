@@ -1,11 +1,11 @@
 package net.az3l1t.aop.config.notification;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Data
 @Component
+@Getter
 @ConfigurationProperties(prefix = "notification.email")
 public class NotificationProperties {
     private String sender;
