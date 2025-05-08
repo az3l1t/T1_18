@@ -1,11 +1,13 @@
 package net.az3l1t.aop.config.notification;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
+@Setter
 @ConfigurationProperties(prefix = "async.notification")
 public class AsyncNotificationProperties {
     private int corePoolSize;
