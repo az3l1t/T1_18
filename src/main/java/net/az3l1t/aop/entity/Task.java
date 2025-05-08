@@ -2,6 +2,7 @@ package net.az3l1t.aop.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.az3l1t.aop.entity.enumirations.TaskStatus;
 
 @Entity
 @Table(name = "tasks")
@@ -19,4 +20,7 @@ public class Task {
     private String description;
     @Column(nullable = false)
     private Long userId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TaskStatus status;
 }
