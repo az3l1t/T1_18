@@ -21,6 +21,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
 		Spring Boot Starters
 	 */
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'net.az3l1t:norair-starter-boot:1.0-SNAPSHOT'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.10'
 

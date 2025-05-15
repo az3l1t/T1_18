@@ -2,7 +2,6 @@ package net.az3l1t.aop.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.az3l1t.aop.aspect.annotation.*;
 import net.az3l1t.aop.dto.TaskCreateDto;
 import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.dto.TaskUpdateDto;
@@ -23,15 +22,12 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     @Transactional
-    @LogExecution
     public TaskResponseDto createTask(TaskCreateDto taskDto) {
         Task task = taskMapper.toEntity(taskDto);
         return taskMapper.toResponseDto(taskRepository.save(task));
     }
 
     @Transactional
-    @LogExceptionTaskNotFound
-    @LogExecution
     public TaskResponseDto updateTask(Long id, TaskUpdateDto taskUpdateDto) {
         Task task = findTaskById(id);
         taskMapper.updateEntityFromDto(taskUpdateDto, task);
@@ -39,24 +35,18 @@ public class TaskService {
     }
 
     @Transactional
-    @LogExceptionTaskNotFound
     public void deleteTask(Long id) {
         Task task = findTaskById(id);
         taskRepository.delete(task);
     }
 
     @Transactional(readOnly = true)
-    @LogExceptionTaskNotFound
-    @LogResult
-    @LogExecution
     public TaskResponseDto getTaskById(Long id) {
         Task task = findTaskById(id);
         return taskMapper.toResponseDto(task);
     }
 
     @Transactional(readOnly = true)
-    @LogTracking
-    @LogExecution
     public Page<TaskResponseDto> getAllTasks(Pageable pageable) {
         return taskRepository.findAll(pageable)
                 .map(taskMapper::toResponseDto);
