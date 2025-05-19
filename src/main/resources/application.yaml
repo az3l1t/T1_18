@@ -2,7 +2,7 @@ spring:
   application:
     name: aop
   datasource:
-    url: { }
+    url: {  }
     username: {  }
     password: {  }
     driver-class-name: org.postgresql.Driver
@@ -46,7 +46,7 @@ notification:
     basic-text-update: The task has changed status
 
 kafka:
-  bootstrap-servers: { }
+  bootstrap-servers: {  }
   producer:
     retries: 3
   consumer:
@@ -74,4 +74,4 @@ execution:
     cracking: 500
 
 server:
-  port: { }
+  port: {  }
