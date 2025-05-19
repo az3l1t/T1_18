@@ -46,7 +46,7 @@ notification:
     basic-text-update: The task has changed status
 
 kafka:
-  bootstrap-servers: localhost:9092
+  bootstrap-servers: { }
   producer:
     retries: 3
   consumer:
