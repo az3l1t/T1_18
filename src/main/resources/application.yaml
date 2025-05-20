@@ -30,6 +30,14 @@ spring:
             enable: true
         debug: true
 
+http:
+  logging:
+    enabled: true
+    level: INFO
+    request: true
+    response: true
+    time: true
+
 notification:
   email:
     recipient: {  }
