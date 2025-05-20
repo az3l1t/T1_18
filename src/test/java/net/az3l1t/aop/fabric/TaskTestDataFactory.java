@@ -17,7 +17,7 @@ public class TaskTestDataFactory {
     }
 
     public static TaskResponseDto taskResponseDto() {
-        return new TaskResponseDto("Testing task", "Description", 1L);
+        return new TaskResponseDto(1L,"Testing task", "Description", 1L);
     }
 
     public static TaskUpdateDto taskUpdateDto() {

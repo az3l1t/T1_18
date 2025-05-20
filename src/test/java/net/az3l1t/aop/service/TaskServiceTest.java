@@ -46,30 +46,23 @@ public class TaskServiceTest {
     @InjectMocks
     private TaskService taskService;
 
-    private static Task task;
-    private static TaskCreateDto taskCreateDto;
-    private static TaskResponseDto taskResponseDto;
-    private static TaskUpdateDto taskUpdateDto;
-    private static TaskUpdateDto noStatusChangeDto;
-
     @BeforeEach
     void setUp() {
-        task = TaskTestDataFactory.task();
-        taskCreateDto = TaskTestDataFactory.taskCreateDto();
-        taskResponseDto = TaskTestDataFactory.taskResponseDto();
-        taskUpdateDto = TaskTestDataFactory.taskUpdateDto();
-        noStatusChangeDto = TaskTestDataFactory.taskUpdateDtoNoStatusChange();
-
         ReflectionTestUtils.setField(taskService, "taskUpdatingTopic", "test-topic");
     }
 
     @Test
     void createTask_Success() {
+        Task task = TaskTestDataFactory.task();
+        TaskCreateDto taskCreateDto = TaskTestDataFactory.taskCreateDto();
+        TaskResponseDto taskResponseDto = TaskTestDataFactory.taskResponseDto();
+
         when(taskRepository.save(any(Task.class))).thenReturn(task);
 
         TaskResponseDto result = taskService.createTask(taskCreateDto);
 
         assertNotNull(result);
+        assertEquals(taskResponseDto.id(), result.id());
         assertEquals(taskResponseDto.title(), result.title());
         assertEquals(taskResponseDto.description(), result.description());
         assertEquals(taskResponseDto.userId(), result.userId());
@@ -80,12 +73,17 @@ public class TaskServiceTest {
 
     @Test
     void updateTask_Success_WithStatusChange() {
+        Task task = TaskTestDataFactory.task();
+        TaskUpdateDto taskUpdateDto = TaskTestDataFactory.taskUpdateDto();
+        TaskResponseDto taskResponseDto = TaskTestDataFactory.taskResponseDto();
+
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
         when(taskRepository.save(task)).thenReturn(task);
 
         TaskResponseDto result = taskService.updateTask(1L, taskUpdateDto);
 
         assertNotNull(result);
+        assertEquals(taskResponseDto.id(), result.id());
         assertEquals(taskResponseDto.title(), result.title());
         assertEquals(taskResponseDto.description(), result.description());
         assertEquals(taskResponseDto.userId(), result.userId());
@@ -96,11 +94,16 @@ public class TaskServiceTest {
 
     @Test
     void updateTask_Success_NoStatusChange() {
+        Task task = TaskTestDataFactory.task();
+        TaskUpdateDto noStatusChangeDto = TaskTestDataFactory.taskUpdateDtoNoStatusChange();
+        TaskResponseDto taskResponseDto = TaskTestDataFactory.taskResponseDto();
+
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
 
         TaskResponseDto result = taskService.updateTask(1L, noStatusChangeDto);
 
         assertNotNull(result);
+        assertEquals(taskResponseDto.id(), result.id());
         assertEquals(taskResponseDto.title(), result.title());
         assertEquals(taskResponseDto.description(), result.description());
         assertEquals(taskResponseDto.userId(), result.userId());
@@ -111,6 +114,8 @@ public class TaskServiceTest {
 
     @Test
     void updateTask_TaskNotFound() {
+        TaskUpdateDto taskUpdateDto = TaskTestDataFactory.taskUpdateDto();
+
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(1L, taskUpdateDto));
@@ -119,6 +124,8 @@ public class TaskServiceTest {
 
     @Test
     void deleteTask_Success() {
+        Task task = TaskTestDataFactory.task();
+
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
 
         taskService.deleteTask(1L);
@@ -136,11 +143,15 @@ public class TaskServiceTest {
 
     @Test
     void getTaskById_Success() {
+        Task task = TaskTestDataFactory.task();
+        TaskResponseDto taskResponseDto = TaskTestDataFactory.taskResponseDto();
+
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
 
         TaskResponseDto result = taskService.getTaskById(1L);
 
         assertNotNull(result);
+        assertEquals(taskResponseDto.id(), result.id());
         assertEquals(taskResponseDto.title(), result.title());
         assertEquals(taskResponseDto.description(), result.description());
         assertEquals(taskResponseDto.userId(), result.userId());
@@ -158,14 +169,18 @@ public class TaskServiceTest {
 
     @Test
     void getAllTasks_Success() {
+        Task task = TaskTestDataFactory.task();
+        TaskResponseDto taskResponseDto = TaskTestDataFactory.taskResponseDto();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Task> taskPage = new PageImpl<>(List.of(task));
+
         when(taskRepository.findAll(pageable)).thenReturn(taskPage);
 
         Page<TaskResponseDto> result = taskService.getAllTasks(pageable);
 
         assertNotNull(result);
         assertEquals(1, result.getContent().size());
+        assertEquals(taskResponseDto.id(), result.getContent().get(0).id());
         assertEquals(taskResponseDto.title(), result.getContent().get(0).title());
         assertEquals(taskResponseDto.description(), result.getContent().get(0).description());
         assertEquals(taskResponseDto.userId(), result.getContent().get(0).userId());
