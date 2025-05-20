@@ -9,7 +9,7 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
-public abstract class AbstractTestcontainersConfig {
+public class TestcontainersConfig {
     private static final DockerImageName POSTGRES_IMAGE = DockerImageName.parse("postgres:15");
     private static final DockerImageName KAFKA_IMAGE = DockerImageName.parse("apache/kafka:latest");
 

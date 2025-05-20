@@ -1,7 +1,7 @@
 package net.az3l1t.aop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.az3l1t.aop.config.AbstractTestcontainersConfig;
+import net.az3l1t.aop.config.TestcontainersConfig;
 import net.az3l1t.aop.dto.TaskCreateDto;
 import net.az3l1t.aop.dto.TaskResponseDto;
 import net.az3l1t.aop.dto.TaskUpdateDto;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskControllerIntegrationTest extends AbstractTestcontainersConfig {
+public class TaskControllerIntegrationTest extends TestcontainersConfig {
     @Autowired
     private MockMvc mockMvc;
 
