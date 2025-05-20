@@ -17,8 +17,7 @@ public class TestcontainersConfig {
     protected static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(POSTGRES_IMAGE)
                     .withDatabaseName("testdb")
-                    .withUsername("test")
-                    .withPassword("test");
+                    .withExposedPorts(5432);
 
     @Container
     public static final KafkaContainer kafkaContainer = new KafkaContainer(KAFKA_IMAGE)
