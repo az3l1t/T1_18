@@ -2,9 +2,9 @@ spring:
   application:
     name: aop
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: password
+    url: {  }
+    username: {  }
+    password: {  }
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -20,8 +20,8 @@ spring:
   mail:
     host: smtp.mail.ru
     port: 587
-    username: eternity_cr9p@mail.ru
-    password: 4BQrNtUKvrd8g38qUTiq
+    username: {  }
+    password: {  }
     properties:
       mail:
         smtp:
@@ -40,13 +40,13 @@ http:
 
 notification:
   email:
-    recipient: eternity_cr9p@mail.ru
-    sender: eternity_cr9p@mail.ru
+    recipient: {  }
+    sender: {  }
     subject-update: Task Status Update
     basic-text-update: The task has changed status
 
 kafka:
-  bootstrap-servers: localhost:9092
+  bootstrap-servers: {  }
   producer:
     retries: 3
   consumer:
@@ -74,4 +74,4 @@ execution:
     cracking: 500
 
 server:
-  port: 8080
+  port: {  }
